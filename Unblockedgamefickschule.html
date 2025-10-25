@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minimal Game + VPN</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f7f7f8;
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      margin: 0;
+    }
+    h1 {
+      font-weight: 600;
+      margin-bottom: .25rem;
+    }
+    .container {
+      background: white;
+      border-radius: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      padding: 2rem;
+      width: 100%;
+      max-width: 700px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: .6rem .8rem;
+      border: 1px solid #ccc;
+      border-radius: .5rem;
+      font-size: 1rem;
+    }
+    button {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: .5rem;
+      padding: .6rem 1rem;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    button:hover {
+      background: #4338ca;
+    }
+    .vpn-toggle {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-top: .5rem;
+    }
+    iframe {
+      width: 100%;
+      height: 60vh;
+      border: 1px solid #ddd;
+      border-radius: .5rem;
+      margin-top: 1rem;
+    }
+    .footer {
+      font-size: .8rem;
+      color: #666;
+      margin-top: 1rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎮 Minimal Game + VPN</h1>
+  <p>Einfaches, sauberes Design. Spiel-URL einfügen & laden.</p>
+  
+  <div class="container">
+    <input type="text" id="gameUrl" placeholder="z. B. https://example.com/game" value="https://example.com">
+    
+    <div class="vpn-toggle">
+      <input type="checkbox" id="vpnToggle">
+      <label for="vpnToggle">VPN aktivieren (Demo)</label>
+    </div>
+    
+    <button id="loadBtn">Laden</button>
+    <iframe id="gameFrame" src="about:blank" allowfullscreen></iframe>
+
+    <div class="footer">
+      Der VPN-Schalter ist nur ein visueller Platzhalter.<br>
+      Echte VPN-Funktionalität erfordert Server-Unterstützung.
+    </div>
+  </div>
+
+  <script>
+    const urlInput = document.getElementById("gameUrl");
+    const loadBtn = document.getElementById("loadBtn");
+    const iframe = document.getElementById("gameFrame");
+    const vpnToggle = document.getElementById("vpnToggle");
+
+    function loadGame() {
+      const url = urlInput.value.trim();
+      if (!url) {
+        alert("Bitte eine gültige Spiel-URL eingeben!");
+        return;
+      }
+      // Wenn VPN aktiv ist, würde man hier eigentlich eine Proxy-URL verwenden:
+      const src = vpnToggle.checked 
+        ? `https://proxy.example.com/?url=${encodeURIComponent(url)}`
+        : url;
+      iframe.src = src;
+    }
+
+    loadBtn.addEventListener("click", loadGame);
+    urlInput.addEventListener("keydown", e => {
+      if (e.key === "Enter") loadGame();
+    });
+  </script>
+</body>
+</html>
